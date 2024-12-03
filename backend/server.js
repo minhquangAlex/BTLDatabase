@@ -2,8 +2,12 @@ const express = require('express');
 const sql = require('mssql');
 const bodyParser = require('body-parser');
 const dbConfig = require('./dbConfig');
-const customerApi = require('./customerApi');
-
+const customerApi = require('./Customer');
+const employeeApi = require('./Employee');
+const branchApi = require('./Branch');
+const supplierApi = require('./Supplier');
+const voucherApi = require('./Voucher');
+const salaryApi = require('./Salary');
 const app = express();
 const port = 3000;
 
@@ -23,7 +27,11 @@ app.use(bodyParser.json());
 
 // Đăng ký các API
 app.use(customerApi);
-
+app.use(employeeApi);
+app.use(branchApi);
+app.use(supplierApi);
+app.use(voucherApi);
+app.use(salaryApi);
 // Khởi chạy server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

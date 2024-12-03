@@ -1,24 +1,9 @@
 const express = require('express');
 const sql = require('mssql');
-const bodyParser = require('body-parser');
-const dbConfig = require('./dbConfig');
+const router = express.Router();
 
-const app = express();
-const port = 3000;
-
-sql.connect(dbConfig)
-  .then(pool => {
-    console.log('Connected to the database');
-    app.locals.db = pool;
-  })
-  .catch(err => {
-    console.error('Connection error: ', err.stack);
-    process.exit(1);
-  });
-
-app.use(bodyParser.json());
-
-app.post('/customer', async (req, res) => {
+// API CRUD for Customer
+router.post('/customer', async (req, res) => {
   const { ID, SDT, NgaySinh, GioiTinh, Email, Ten, TenTaiKhoan, MatKhau, DaiDienDoanhNghiep } = req.body;
   const query = `
     INSERT INTO KhachHang (ID, SDT, NgaySinh, GioiTinh, Email, Ten, TenTaiKhoan, MatKhau, DaiDienDoanhNghiep) 
@@ -26,7 +11,7 @@ app.post('/customer', async (req, res) => {
   `;
   
   try {
-    const pool = await sql.connect(dbConfig);
+    const pool = req.app.locals.db;
     await pool.request()
       .input('ID', sql.NVarChar, ID)
       .input('SDT', sql.NVarChar, SDT)
@@ -36,7 +21,7 @@ app.post('/customer', async (req, res) => {
       .input('Ten', sql.NVarChar, Ten)
       .input('TenTaiKhoan', sql.NVarChar, TenTaiKhoan)
       .input('MatKhau', sql.NVarChar, MatKhau)
-      .input('DaiDienDoanhNghiep', sql.NVarChar, DaiDienDoanhNghiep)
+      .input('DaiDienDoanhNghiep', sql.Bit, DaiDienDoanhNghiep)
       .query(query);
     res.send({ message: 'Khách hàng đã được thêm!' });
   } catch (err) {
@@ -45,11 +30,11 @@ app.post('/customer', async (req, res) => {
   }
 });
 
-app.get('/customer', async (req, res) => {
+router.get('/customer', async (req, res) => {
   const query = 'SELECT * FROM KhachHang';
-  
+
   try {
-    const pool = await sql.connect(dbConfig);
+    const pool = req.app.locals.db;
     const result = await pool.request().query(query);
     res.json(result.recordset);
   } catch (err) {
@@ -58,16 +43,16 @@ app.get('/customer', async (req, res) => {
   }
 });
 
-app.get('/customer/:id', async (req, res) => {
+router.get('/customer/:id', async (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM KhachHang WHERE ID = @ID';
-  
+
   try {
-    const pool = await sql.connect(dbConfig);
+    const pool = req.app.locals.db;
     const result = await pool.request()
       .input('ID', sql.NVarChar, id)
       .query(query);
-    
+
     if (result.recordset.length === 0) {
       return res.status(404).send({ message: 'Khách hàng không tìm thấy!' });
     }
@@ -78,7 +63,7 @@ app.get('/customer/:id', async (req, res) => {
   }
 });
 
-app.put('/customer/:id', async (req, res) => {
+router.put('/customer/:id', async (req, res) => {
   const { id } = req.params;
   const { SDT, NgaySinh, GioiTinh, Email, Ten, TenTaiKhoan, MatKhau, DaiDienDoanhNghiep } = req.body;
   const query = `
@@ -87,9 +72,9 @@ app.put('/customer/:id', async (req, res) => {
         Ten = @Ten, TenTaiKhoan = @TenTaiKhoan, MatKhau = @MatKhau, DaiDienDoanhNghiep = @DaiDienDoanhNghiep
     WHERE ID = @ID
   `;
-  
+
   try {
-    const pool = await sql.connect(dbConfig);
+    const pool = req.app.locals.db;
     await pool.request()
       .input('ID', sql.NVarChar, id)
       .input('SDT', sql.NVarChar, SDT)
@@ -99,9 +84,9 @@ app.put('/customer/:id', async (req, res) => {
       .input('Ten', sql.NVarChar, Ten)
       .input('TenTaiKhoan', sql.NVarChar, TenTaiKhoan)
       .input('MatKhau', sql.NVarChar, MatKhau)
-      .input('DaiDienDoanhNghiep', sql.NVarChar, DaiDienDoanhNghiep)
+      .input('DaiDienDoanhNghiep', sql.Bit, DaiDienDoanhNghiep)
       .query(query);
-    
+
     res.send({ message: 'Khách hàng đã được cập nhật!' });
   } catch (err) {
     console.error('Error updating customer:', err);
@@ -109,16 +94,16 @@ app.put('/customer/:id', async (req, res) => {
   }
 });
 
-app.delete('/customer/:id', async (req, res) => {
+router.delete('/customer/:id', async (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM KhachHang WHERE ID = @ID';
-  
+
   try {
-    const pool = await sql.connect(dbConfig);
+    const pool = req.app.locals.db;
     await pool.request()
       .input('ID', sql.NVarChar, id)
       .query(query);
-    
+
     res.send({ message: 'Khách hàng đã bị xóa!' });
   } catch (err) {
     console.error('Error deleting customer:', err);
@@ -126,6 +111,4 @@ app.delete('/customer/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+module.exports = router;

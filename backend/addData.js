@@ -8,8 +8,8 @@ async function resetAndAddMultipleEmployeeData() {
 
     // Xóa tất cả dữ liệu cũ
     await pool.request().query('DELETE FROM [dbo].[DanhSachSanPhamMua]');
-    await pool.request().query('DELETE FROM [dbo].[DanhSachSanPhamKho]');
     await pool.request().query('DELETE FROM [dbo].[DanhSachSanPhamNhap]');
+    await pool.request().query('DELETE FROM [dbo].[DanhSachSanPhamKho]');
     await pool.request().query('DELETE FROM [dbo].[DanhGia]');
     await pool.request().query('DELETE FROM [dbo].[GioHang]');
     await pool.request().query('DELETE FROM [dbo].[CaLamViec]');
@@ -17,14 +17,15 @@ async function resetAndAddMultipleEmployeeData() {
     await pool.request().query('DELETE FROM [dbo].[HoaDonNhapHang]');
     await pool.request().query('DELETE FROM [dbo].[BangLuong]');
     await pool.request().query('DELETE FROM [dbo].[Voucher]');
+    await pool.request().query('DELETE FROM [dbo].[DungCuHocTap]');
+    await pool.request().query('DELETE FROM [dbo].[Sach]');
+    await pool.request().query('DELETE FROM [dbo].[PhuKienSach]');
+    await pool.request().query('DELETE FROM [dbo].[SanPham]');
     await pool.request().query('DELETE FROM [dbo].[NhanVien]');
     await pool.request().query('DELETE FROM [dbo].[KhachHang]');
     await pool.request().query('DELETE FROM [dbo].[ChiNhanh]');
     await pool.request().query('DELETE FROM [dbo].[NhaCungCap]');
-    await pool.request().query('DELETE FROM [dbo].[SanPham]');
-    await pool.request().query('DELETE FROM [dbo].[DungCuHocTap]');
-    await pool.request().query('DELETE FROM [dbo].[Sach]');
-    await pool.request().query('DELETE FROM [dbo].[PhuKienSach]');
+
 
     
     console.log('Tất cả dữ liệu đã được xóa!');
@@ -149,6 +150,39 @@ async function resetAndAddMultipleEmployeeData() {
         { MaSanPham: 'PK000010', TenSanPham: 'Kẹp giấy', Gia: 5000, MoTa: 'Kẹp giấy văn phòng', CongDung: 'Giữ giấy gọn gàng', MauSac: 'Đỏ' }
     ];
     
+    const sanPham = [
+      { MaSanPham: 'DC000001', Ten: 'Bút bi', GiaBan: 4000, GiaVonTrungBinh: 3500, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'DC000002', Ten: 'Vở', GiaBan: 10000, GiaVonTrungBinh: 8500, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'DC000003', Ten: 'Cặp sách', GiaBan: 500000, GiaVonTrungBinh: 450000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'DC000004', Ten: 'Tẩy', GiaBan: 5000, GiaVonTrungBinh: 4500, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'DC000005', Ten: 'Thước kẻ', GiaBan: 10000, GiaVonTrungBinh: 8500, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'DC000006', Ten: 'Bút chì', GiaBan: 5000, GiaVonTrungBinh: 4000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'DC000007', Ten: 'Gôm', GiaBan: 4000, GiaVonTrungBinh: 3000, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'DC000008', Ten: 'Bút lông', GiaBan: 20000, GiaVonTrungBinh: 18000, NhaCungCap: 'NCC0004' },
+      { MaSanPham: 'DC000009', Ten: 'Bảng con', GiaBan: 30000, GiaVonTrungBinh: 25000, NhaCungCap: 'NCC0005' },
+      { MaSanPham: 'DC000010', Ten: 'Kéo', GiaBan: 20000, GiaVonTrungBinh: 18000, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'SC000001', Ten: 'Toán học', GiaBan: 50000, GiaVonTrungBinh: 45000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'SC000002', Ten: 'Vật lý', GiaBan: 60000, GiaVonTrungBinh: 55000, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'SC000003', Ten: 'Tiểu thuyết', GiaBan: 70000, GiaVonTrungBinh: 65000, NhaCungCap: 'NCC0004' },
+      { MaSanPham: 'SC000004', Ten: 'Tiểu thuyết', GiaBan: 80000, GiaVonTrungBinh: 75000, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'SC000005', Ten: 'Tiểu thuyết', GiaBan: 90000, GiaVonTrungBinh: 85000, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'SC000006', Ten: 'Khoa học viễn tưởng', GiaBan: 100000, GiaVonTrungBinh: 95000, NhaCungCap: 'NCC0005' },
+      { MaSanPham: 'SC000007', Ten: 'Lịch sử', GiaBan: 70000, GiaVonTrungBinh: 65000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'SC000008', Ten: 'Tiểu thuyết', GiaBan: 80000, GiaVonTrungBinh: 75000, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'SC000009', Ten: 'Phát triển bản thân', GiaBan: 60000, GiaVonTrungBinh: 55000, NhaCungCap: 'NCC0004' },
+      { MaSanPham: 'SC000010', Ten: 'Chính trị', GiaBan: 90000, GiaVonTrungBinh: 85000, NhaCungCap: 'NCC0005' },
+      { MaSanPham: 'PK000001', Ten: 'Bìa sách', GiaBan: 10000, GiaVonTrungBinh: 8000, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'PK000002', Ten: 'Dây đeo sách', GiaBan: 15000, GiaVonTrungBinh: 12000, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'PK000003', Ten: 'Kẹp sách', GiaBan: 5000, GiaVonTrungBinh: 4000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'PK000004', Ten: 'Sổ tay', GiaBan: 25000, GiaVonTrungBinh: 20000, NhaCungCap: 'NCC0005' },
+      { MaSanPham: 'PK000005', Ten: 'Bút dạ quang', GiaBan: 20000, GiaVonTrungBinh: 17000, NhaCungCap: 'NCC0004' },
+      { MaSanPham: 'PK000006', Ten: 'Bao đựng sách', GiaBan: 15000, GiaVonTrungBinh: 12000, NhaCungCap: 'NCC0001' },
+      { MaSanPham: 'PK000007', Ten: 'Móc treo sách', GiaBan: 10000, GiaVonTrungBinh: 8000, NhaCungCap: 'NCC0002' },
+      { MaSanPham: 'PK000008', Ten: 'Gáy sách', GiaBan: 20000, GiaVonTrungBinh: 18000, NhaCungCap: 'NCC0003' },
+      { MaSanPham: 'PK000009', Ten: 'Bìa bảo vệ', GiaBan: 12000, GiaVonTrungBinh: 10000, NhaCungCap: 'NCC0005' },
+      { MaSanPham: 'PK000010', Ten: 'Kẹp giấy', GiaBan: 5000, GiaVonTrungBinh: 4000, NhaCungCap: 'NCC0004' }
+  ];
+  
     const Vouchers = [
         { Code: 'VO000001', SoLanApDungToiDa: 3, TiLeGiam: 0.30, GiaTriGiam: 50000, NgayBatDau: '2024-01-01', NgayKetThuc: '2024-01-31' },
         { Code: 'VO000002', SoLanApDungToiDa: 2, TiLeGiam: 0.40, GiaTriGiam: 30000, NgayBatDau: '2024-02-01', NgayKetThuc: '2024-02-28' },
@@ -174,7 +208,7 @@ async function resetAndAddMultipleEmployeeData() {
     
     const hoaDonBanHang = [
         { 
-            MaHoaDon: '0000001', 
+            MaHoaDon: 200001, 
             GhiChu: 'Bán sách giáo khoa lớp 10', 
             HinhThucThanhToan: 'Chuyển khoản', 
             TrangThai: 'Đã thanh toán', 
@@ -188,7 +222,7 @@ async function resetAndAddMultipleEmployeeData() {
             MaVoucher: 'VO000001'
         },
         { 
-            MaHoaDon: '0000002', 
+            MaHoaDon: 200002, 
             GhiChu: 'Bán sách tham khảo toán học', 
             HinhThucThanhToan: 'Tiền mặt', 
             TrangThai: 'Chưa thanh toán', 
@@ -202,7 +236,7 @@ async function resetAndAddMultipleEmployeeData() {
             MaVoucher: 'VO000002'
         },
         { 
-            MaHoaDon: '0000003', 
+            MaHoaDon: 200003,  
             GhiChu: 'Bán bộ phụ kiện sách và dụng cụ học tập', 
             HinhThucThanhToan: 'Chuyển khoản', 
             TrangThai: 'Đã thanh toán', 
@@ -216,7 +250,7 @@ async function resetAndAddMultipleEmployeeData() {
             MaVoucher: 'VO000003'
         },
         { 
-            MaHoaDon: '0000004', 
+            MaHoaDon: 200004,   
             GhiChu: 'Bán sách giáo khoa lớp 12', 
             HinhThucThanhToan: 'Tiền mặt', 
             TrangThai: 'Chưa thanh toán', 
@@ -230,7 +264,7 @@ async function resetAndAddMultipleEmployeeData() {
             MaVoucher: 'VO000004'
         },
         { 
-            MaHoaDon: '0000005', 
+            MaHoaDon: 200005,  
             GhiChu: 'Bán dụng cụ học tập cho học sinh lớp 8', 
             HinhThucThanhToan: 'Chuyển khoản', 
             TrangThai: 'Đã thanh toán', 
@@ -248,15 +282,15 @@ async function resetAndAddMultipleEmployeeData() {
 
     const gioHang = [
         { MaKhachHang: 'KH000001', MaSanPham: 'PK000004', SoLuong: 2 },
-        // { MaKhachHang: 'KH000002', MaSanPham: 'SC000005', SoLuong: 1 },
+        { MaKhachHang: 'KH000002', MaSanPham: 'SC000005', SoLuong: 1 },
         { MaKhachHang: 'KH000002', MaSanPham: 'DC000008', SoLuong: 5 },
         { MaKhachHang: 'KH000003', MaSanPham: 'DC000006', SoLuong: 3 },
         { MaKhachHang: 'KH000004', MaSanPham: 'PK000003', SoLuong: 1 },
-        // { MaKhachHang: 'KH000004', MaSanPham: 'DC000002', SoLuong: 4 },
+        { MaKhachHang: 'KH000004', MaSanPham: 'DC000002', SoLuong: 4 },
         { MaKhachHang: 'KH000005', MaSanPham: 'SC000004', SoLuong: 2 },
-        // { MaKhachHang: 'KH000005', MaSanPham: 'PK000007', SoLuong: 1 },
+        { MaKhachHang: 'KH000005', MaSanPham: 'PK000007', SoLuong: 1 },
         { MaKhachHang: 'KH000006', MaSanPham: 'DC000008', SoLuong: 6 },
-        // { MaKhachHang: 'KH000006', MaSanPham: 'SC000004', SoLuong: 3 }
+        { MaKhachHang: 'KH000006', MaSanPham: 'SC000004', SoLuong: 3 }
     ];
     
 
@@ -269,11 +303,11 @@ async function resetAndAddMultipleEmployeeData() {
     ];
     
     const reviews = [
-        { MaSanPham: 'SP000001', MaKhachHang: 'KH000001', SoSao: 5, BinhLuan: 'Sản phẩm tuyệt vời!' },
-        { MaSanPham: 'SP000006', MaKhachHang: 'KH000002', SoSao: 4, BinhLuan: 'Chất lượng tốt, giao hàng nhanh.' },
-        { MaSanPham: 'SP000002', MaKhachHang: 'KH000003', SoSao: 3, BinhLuan: 'Sản phẩm ổn, nhưng cần cải thiện.' },
-        { MaSanPham: 'SP000004', MaKhachHang: 'KH000004', SoSao: 2, BinhLuan: 'Không đúng như mong đợi.' },
-        { MaSanPham: 'SP000005', MaKhachHang: 'KH000005', SoSao: 1, BinhLuan: 'Rất tệ, tôi sẽ không mua lại.' }
+        { MaSanPham: 'PK000001', MaKhachHang: 'KH000001', SoSao: 5, BinhLuan: 'Sản phẩm tuyệt vời!' },
+        { MaSanPham: 'PK000006', MaKhachHang: 'KH000002', SoSao: 4, BinhLuan: 'Chất lượng tốt, giao hàng nhanh.' },
+        { MaSanPham: 'PK000002', MaKhachHang: 'KH000003', SoSao: 3, BinhLuan: 'Sản phẩm ổn, nhưng cần cải thiện.' },
+        { MaSanPham: 'PK000004', MaKhachHang: 'KH000004', SoSao: 2, BinhLuan: 'Không đúng như mong đợi.' },
+        { MaSanPham: 'PK000005', MaKhachHang: 'KH000005', SoSao: 1, BinhLuan: 'Rất tệ, tôi sẽ không mua lại.' }
     ];
     
     const danhSachSanPhamNhap = [
@@ -295,24 +329,24 @@ async function resetAndAddMultipleEmployeeData() {
         { MaChiNhanh: '00003', MaSanPham: 'DC000010', SoLuong: 70 },
         { MaChiNhanh: '00004', MaSanPham: 'PK000008', SoLuong: 40 },
         { MaChiNhanh: '00005', MaSanPham: 'DC000002', SoLuong: 120 },
-        // { MaChiNhanh: '00001', MaSanPham: 'SC000009', SoLuong: 80 },
-        // { MaChiNhanh: '00002', MaSanPham: 'DC000005', SoLuong: 90 },
-        // { MaChiNhanh: '00003', MaSanPham: 'PK000003', SoLuong: 100 },
-        // { MaChiNhanh: '00004', MaSanPham: 'SC000004', SoLuong: 150 },
-        // { MaChiNhanh: '00005', MaSanPham: 'SC000008', SoLuong: 60 }
+        { MaChiNhanh: '00001', MaSanPham: 'SC000009', SoLuong: 80 },
+        { MaChiNhanh: '00002', MaSanPham: 'DC000005', SoLuong: 90 },
+        { MaChiNhanh: '00003', MaSanPham: 'PK000003', SoLuong: 100 },
+        { MaChiNhanh: '00004', MaSanPham: 'SC000004', SoLuong: 150 },
+        { MaChiNhanh: '00005', MaSanPham: 'SC000008', SoLuong: 60 }
     ];
     
     const danhSachSanPhamMua = [
-        { MaHoaDon: 100001, MaSanPham: 'PK000009', SoLuong: 5, GiaKhiMua: 70000 },
-        { MaHoaDon: 100002, MaSanPham: 'SC000002', SoLuong: 3, GiaKhiMua: 75000 },
-        { MaHoaDon: 100003, MaSanPham: 'SC000010', SoLuong: 2, GiaKhiMua: 80000 },
-        { MaHoaDon: 100004, MaSanPham: 'PK000004', SoLuong: 1, GiaKhiMua: 100000 },
-        { MaHoaDon: 100005, MaSanPham: 'DC000003', SoLuong: 4, GiaKhiMua: 90000 },
-        { MaHoaDon: 100006, MaSanPham: 'PK000007', SoLuong: 6, GiaKhiMua: 85000 },
-        { MaHoaDon: 100007, MaSanPham: 'SC000001', SoLuong: 3, GiaKhiMua: 95000 },
-        { MaHoaDon: 100008, MaSanPham: 'SC000005', SoLuong: 7, GiaKhiMua: 70000 },
-        { MaHoaDon: 100009, MaSanPham: 'PK000002', SoLuong: 4, GiaKhiMua: 65000 },
-        { MaHoaDon: 100010, MaSanPham: 'DC000008', SoLuong: 2, GiaKhiMua: 110000 }
+        { MaHoaDon: 200001, MaSanPham: 'PK000009', SoLuong: 5, GiaKhiMua: 70000 },
+        { MaHoaDon: 200002, MaSanPham: 'SC000002', SoLuong: 3, GiaKhiMua: 75000 },
+        { MaHoaDon: 200003, MaSanPham: 'SC000010', SoLuong: 2, GiaKhiMua: 80000 },
+        { MaHoaDon: 200004, MaSanPham: 'PK000004', SoLuong: 1, GiaKhiMua: 200000 },
+        { MaHoaDon: 200005, MaSanPham: 'DC000003', SoLuong: 4, GiaKhiMua: 90000 },
+        // { MaHoaDon: 200006, MaSanPham: 'PK000007', SoLuong: 6, GiaKhiMua: 85000 },
+        // { MaHoaDon: 200007, MaSanPham: 'SC000001', SoLuong: 3, GiaKhiMua: 95000 },
+        // { MaHoaDon: 200008, MaSanPham: 'SC000005', SoLuong: 7, GiaKhiMua: 70000 },
+        // { MaHoaDon: 200009, MaSanPham: 'PK000002', SoLuong: 4, GiaKhiMua: 65000 },
+        // { MaHoaDon: 200010, MaSanPham: 'DC000008', SoLuong: 2, GiaKhiMua: 110000 }
     ];
     
 
@@ -345,214 +379,245 @@ async function resetAndAddMultipleEmployeeData() {
       return { email, password, userName };
     }
 
-    async function addCustomer(customer) {
-        const query = `INSERT INTO KhachHang (ID, Ten, SDT, NgaySinh, GioiTinh, Email, DaiDienDoanhNghiep, TenTaiKhoan, MatKhau) VALUES 
-        ('${removeVietnameseTones(customer.ID)}', '${removeVietnameseTones(customer.Ten)}', '${customer.SDT}', '${customer.NgaySinh}', '${removeVietnameseTones(customer.GioiTinh)}',
-         '${removeVietnameseTones(customer.Email)}', ${customer.DaiDienDoanhNghiep}, '${removeVietnameseTones(customer.TenTaiKhoan)}', '${customer.MatKhau}')`;
-  
-        try {
-          await pool.request().query(query);
-        } catch (error) {
-          console.log('Lỗi khi thêm khách hàng: ', error);
-        }
-      }
-  
-      for (const customer of customers) {
-        await addCustomer(customer);
-      }
-    for (let i = 0; i < employees.length; i++) {
-      const employee = employees[i];
-      const { email, password, userName} = generateEmailAndPassword(employee.Ten);
-      const sdt = generateSDT();
+async function addBranch(branch) {
+  const query = `INSERT INTO ChiNhanh (MaChiNhanh, ThoiGianBatDau, ThoiGianKetThuc, Ten, SDT, DiaChi) VALUES
+  ('${removeVietnameseTones(branch.MaChiNhanh)}', '${branch.ThoiGianBatDau}', '${branch.ThoiGianKetThuc}', '${removeVietnameseTones(branch.Ten)}', '${branch.SDT}', '${removeVietnameseTones(branch.DiaChi)}')`;
 
-      const employeeID = `NV${(i + 1).toString().padStart(6, '0')}`;
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm chi nhánh: ', error);
+  }
+}
 
-      await pool.request()
-        .input('ID', sql.NVarChar, employeeID)
-        .input('SoGioLam', sql.Int, employee.SoGioLam)
-        .input('HeSoLuong', sql.Float, employee.HeSoLuong) // Thêm HeSoLuong
-        .input('ThoiGianBatDau', sql.DateTime, employee.ThoiGianBatDau)
-        .input('ChucVu', sql.NVarChar, employee.ChucVu)
-        .input('Luong', sql.Int, employee.Luong)
-        .input('SDT', sql.NVarChar, sdt)
-        .input('NgaySinh', sql.Date, employee.NgaySinh)
-        .input('GioiTinh', sql.NVarChar, employee.GioiTinh)
-        .input('Email', sql.NVarChar, email)
-        .input('Ten', sql.NVarChar, employee.Ten)
-        .input('MatKhau', sql.NVarChar, password)
-        .input('TenTaiKhoan', sql.NVarChar, userName)
-        .input('MaNhanVienQuanLy', sql.Int, 1) 
-        .input('MaChiNhanhLamViec', sql.Int, 2) 
-        .query(`
+for (const branch of chiNhanh) {
+  await addBranch(branch);
+}
+
+async function addSupplier(supplier) {
+  const query = `INSERT INTO NhaCungCap (MaNhaCungCap, TenNhaCungCap, DiaChi, SDT) VALUES
+    ('${supplier.MaNhaCungCap}', N'${supplier.TenNhaCungCap}', N'${supplier.DiaChi}', '${supplier.SDT}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm nhà cung cấp: ', error);
+  }
+}
+
+for (const supplier of nhaCungCap) {
+  await addSupplier(supplier);
+}
+
+async function addProduct(product) {
+  const query = `
+      INSERT INTO SanPham (MaSanPham, Ten, GiaBan, GiaVonTrungBinh, NhaCungCap)
+      VALUES ('${product.MaSanPham}', N'${product.Ten}', ${product.GiaBan}, ${product.GiaVonTrungBinh}, N'${product.NhaCungCap}')
+  `;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm sản phẩm:', error);
+  }
+}
+
+for (const product of sanPham) {
+  await addProduct(product);
+}
+
+
+
+async function addCustomer(customer) {
+  const query = `INSERT INTO KhachHang (ID, Ten, SDT, NgaySinh, GioiTinh, Email, DaiDienDoanhNghiep, TenTaiKhoan, MatKhau) VALUES 
+  ('${removeVietnameseTones(customer.ID)}', '${removeVietnameseTones(customer.Ten)}', '${customer.SDT}', '${customer.NgaySinh}', '${removeVietnameseTones(customer.GioiTinh)}',
+   '${removeVietnameseTones(customer.Email)}', ${customer.DaiDienDoanhNghiep}, '${removeVietnameseTones(customer.TenTaiKhoan)}', '${customer.MatKhau}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm khách hàng: ', error);
+  }
+}
+
+for (const customer of customers) {
+  await addCustomer(customer);
+}
+
+// Thêm nhân viên
+for (let i = 0; i < employees.length; i++) {
+  const employee = employees[i];
+  const { email, password, userName } = generateEmailAndPassword(employee.Ten);
+  const sdt = generateSDT();
+  const employeeID = `NV${(i + 1).toString().padStart(6, '0')}`;
+
+  await pool.request()
+      .input('ID', sql.NVarChar, employeeID)
+      .input('SoGioLam', sql.Int, employee.SoGioLam)
+      .input('HeSoLuong', sql.Float, employee.HeSoLuong)
+      .input('ThoiGianBatDau', sql.DateTime, employee.ThoiGianBatDau)
+      .input('ChucVu', sql.NVarChar, employee.ChucVu)
+      .input('Luong', sql.Int, employee.Luong)
+      .input('SDT', sql.NVarChar, sdt)
+      .input('NgaySinh', sql.Date, employee.NgaySinh)
+      .input('GioiTinh', sql.NVarChar, employee.GioiTinh)
+      .input('Email', sql.NVarChar, email)
+      .input('Ten', sql.NVarChar, employee.Ten)
+      .input('MatKhau', sql.NVarChar, password)
+      .input('TenTaiKhoan', sql.NVarChar, userName)
+      .input('MaNhanVienQuanLy', sql.Int, 1)
+      .input('MaChiNhanhLamViec', sql.Int, 2)
+      .query(`
           INSERT INTO [dbo].[NhanVien] (
-            [ID], [LoaiNhanVien], [ChucVu], [HeSoLuong], [SDT], 
-            [NgaySinh], [GioiTinh], [Email], [Ten], [TenTaiKhoan], 
-            [MatKhau], [MaNhanVienQuanLy], [MaChiNhanhLamViec]
+              [ID], [LoaiNhanVien], [ChucVu], [HeSoLuong], [SDT], 
+              [NgaySinh], [GioiTinh], [Email], [Ten], [TenTaiKhoan], 
+              [MatKhau], [MaNhanVienQuanLy], [MaChiNhanhLamViec]
           )
           VALUES (
-            @ID, 'Nhân viên', @ChucVu, @HeSoLuong, @SDT, 
-            @NgaySinh, @GioiTinh, @Email, @Ten, @TenTaiKhoan, 
-            @MatKhau, @MaNhanVienQuanLy, @MaChiNhanhLamViec
+              @ID, 'Nhân viên', @ChucVu, @HeSoLuong, @SDT, 
+              @NgaySinh, @GioiTinh, @Email, @Ten, @TenTaiKhoan, 
+              @MatKhau, @MaNhanVienQuanLy, @MaChiNhanhLamViec
           )
-        `);
-       
-    }
-    
-    async function addBranch(branch) {
-        const query = `INSERT INTO ChiNhanh (MaChiNhanh, ThoiGianBatDau, ThoiGianKetThuc, Ten, SDT, DiaChi) VALUES
-        ('${removeVietnameseTones(branch.MaChiNhanh)}', '${branch.ThoiGianBatDau}', '${branch.ThoiGianKetThuc}', '${removeVietnameseTones(branch.Ten)}', '${branch.SDT}', '${removeVietnameseTones(branch.DiaChi)}')`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm chi nhánh: ', error);
-        }
-    }
-    
-    // Thêm các chi nhánh vào cơ sở dữ liệu
-    for (const branch of chiNhanh) {
-        await addBranch(branch);
-    }
+      `);
+}
+async function addVoucher(voucher) {
+  const query = `
+      INSERT INTO Voucher (Code, SoLanApDungToiDa, TiLeGiam, GiaTriGiam, NgayBatDau, NgayKetThuc)
+      VALUES (
+          '${voucher.Code}', ${voucher.SoLanApDungToiDa}, ${voucher.TiLeGiam}, ${voucher.GiaTriGiam}, 
+          '${voucher.NgayBatDau}', '${voucher.NgayKetThuc}'
+      )
+  `;
 
-    async function addSupplier(supplier) {
-        const query = `INSERT INTO NhaCungCap (MaNhaCungCap, TenNhaCungCap, DiaChi, SDT) VALUES
-          ('${supplier.MaNhaCungCap}', N'${supplier.TenNhaCungCap}', N'${supplier.DiaChi}', '${supplier.SDT}')`;
-      
-        try {
-          await pool.request().query(query);
-        } catch (error) {
-          console.log('Lỗi khi thêm nhà cung cấp: ', error);
-        }
-      }
-      
-      for (const supplier of nhaCungCap) {
-        await addSupplier(supplier);
-      }
-
-
-      async function addProductToCart(cartItem) {
-        const query = `INSERT INTO GioHang (MaKhachHang, MaSanPham, SoLuong) VALUES
-            ('${cartItem.MaKhachHang}', '${cartItem.MaSanPham}', ${cartItem.SoLuong})
-            `;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm sản phẩm vào giỏ hàng: ', error);
-        }
-    }
-    
-    for (const cartItem of gioHang) {
-        await addProductToCart(cartItem);
-    }
-      async function addWorkShift(workShift) {
-        const query = `INSERT INTO CaLamViec (MaNhanVien, ThoiDiemBatDau, ThoiDiemKetThuc) VALUES
-          ('${workShift.MaNhanVien}', '${workShift.ThoiDiemBatDau}', '${workShift.ThoiDiemKetThuc}')`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm ca làm việc: ', error);
-        }
-    }
-    
-    for (const workShift of workShifts) {
-        await addWorkShift(workShift);
-    }
-    async function addReview(review) {
-        const query = `INSERT INTO DanhGia (MaSanPham, MaKhachHang, SoSao, BinhLuan) VALUES
-          ('${review.MaSanPham}', '${review.MaKhachHang}', ${review.SoSao}, N'${review.BinhLuan}')`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm đánh giá: ', error);
-        }
-    }
-    
-    for (const review of reviews) {
-        await addReview(review);
-    }
-    
-
-    async function addProductImport(product) {
-        const query = `INSERT INTO DanhSachSanPhamNhap (MaHoaDon, MaSanPham, SoLuong, GiaNhap) VALUES
-          (${product.MaHoaDon}, '${product.MaSanPham}', ${product.SoLuong}, ${product.GiaNhap})`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm sản phẩm nhập: ', error);
-        }
-    }
-    
-    for (const product of danhSachSanPhamNhap) {
-        await addProductImport(product);
-    }
-    
-    async function addProductStock(stockItem) {
-        const query = `INSERT INTO DanhSachSanPhamKho (MaChiNhanh, MaSanPham, SoLuong) VALUES
-          ('${stockItem.MaChiNhanh}', '${stockItem.MaSanPham}', ${stockItem.SoLuong})`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm sản phẩm vào kho: ', error);
-        }
-    }
-    
-    for (const stockItem of danhSachSanPhamKho) {
-        await addProductStock(stockItem);
-    }
-    
-    async function addProductPurchase(purchase) {
-        const query = `INSERT INTO DanhSachSanPhamMua (MaHoaDon, MaSanPham, SoLuong, GiaKhiMua) VALUES
-          (${purchase.MaHoaDon}, '${purchase.MaSanPham}', ${purchase.SoLuong}, ${purchase.GiaKhiMua})`;
-    
-        try {
-            await pool.request().query(query);
-        } catch (error) {
-            console.log('Lỗi khi thêm sản phẩm mua: ', error);
-        }
-    }
-    
-    for (const purchase of danhSachSanPhamMua) {
-        await addProductPurchase(purchase);
-    }
-    
-    async function addHoaDonBan(hoaDon) {
-      const query = `INSERT INTO HoaDonBanHang (MaHoaDon, GhiChu, HinhThucThanhToan, TrangThai, DiaChi, GiaTong, MaKhachHang, MaNhanVienPhuTrach, MaChiNhanhIn, NgayTaoDon, ThanhTien, MaVoucher) 
-      VALUES 
-      ('${hoaDon.MaHoaDon}', '${hoaDon.GhiChu}', '${hoaDon.HinhThucThanhToan}', '${hoaDon.TrangThai}', '${hoaDon.DiaChi}', ${hoaDon.GiaTong}, '${hoaDon.MaKhachHang}', '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaChiNhanhIn}', '${hoaDon.NgayTaoDon}', ${hoaDon.ThanhTien}, '${hoaDon.MaVoucher}')`;
-  
-      try {
-          await pool.request().query(query);
-      } catch (error) {
-          console.log('Lỗi khi thêm hóa đơn bán hàng: ', error);
-      }
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm voucher: ', error);
   }
-  
-  // Thêm các hóa đơn bán hàng vào cơ sở dữ liệu
-  for (const hoaDon of hoaDonBanHang) {
-      await addHoaDonBan(hoaDon);
-  }
-  
-  async function addHoaDonNhap(hoaDon) {
-    const query = `INSERT INTO HoaDonNhapHang (IDHoaDon, GhiChu, ThueNhap, ThoiGian, GiaTong, TongGiaVon, MaNhanVienPhuTrach, MaNhaCungCap, MaChiNhanhNhanHang) 
-    VALUES 
-    (${hoaDon.IDHoaDon}, '${hoaDon.GhiChu}', ${hoaDon.ThueNhap}, '${hoaDon.ThoiGian}', ${hoaDon.GiaTong}, ${hoaDon.TongGiaVon}, '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaNhaCungCap}', '${hoaDon.MaChiNhanhNhanHang}')`;
+}
+for (const voucher of Vouchers) {
+  await addVoucher(voucher);
+}
+async function addProductToCart(cartItem) {
+  const query = `INSERT INTO GioHang (MaKhachHang, MaSanPham, SoLuong) VALUES
+      ('${cartItem.MaKhachHang}', '${cartItem.MaSanPham}', ${cartItem.SoLuong})`;
 
-    try {
-        await pool.request().query(query);
-    } catch (error) {
-        console.log('Lỗi khi thêm hóa đơn nhập hàng: ', error);
-    }
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm sản phẩm vào giỏ hàng: ', error);
+  }
 }
 
-// Thêm các hóa đơn nhập hàng vào cơ sở dữ liệu
+for (const cartItem of gioHang) {
+  await addProductToCart(cartItem);
+}
+
+async function addWorkShift(workShift) {
+  const query = `INSERT INTO CaLamViec (MaNhanVien, ThoiDiemBatDau, ThoiDiemKetThuc) VALUES
+    ('${workShift.MaNhanVien}', '${workShift.ThoiDiemBatDau}', '${workShift.ThoiDiemKetThuc}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm ca làm việc: ', error);
+  }
+}
+
+for (const workShift of workShifts) {
+  await addWorkShift(workShift);
+}
+
+async function addReview(review) {
+  const query = `INSERT INTO DanhGia (MaSanPham, MaKhachHang, SoSao, BinhLuan) VALUES
+    ('${review.MaSanPham}', '${review.MaKhachHang}', ${review.SoSao}, N'${review.BinhLuan}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm đánh giá: ', error);
+  }
+}
+
+for (const review of reviews) {
+  await addReview(review);
+}
+async function addHoaDonBan(hoaDon) {
+  const query = `INSERT INTO HoaDonBanHang (MaHoaDon, GhiChu, HinhThucThanhToan, TrangThai, DiaChi, GiaTong, MaKhachHang, MaNhanVienPhuTrach, MaChiNhanhIn, NgayTaoDon, ThanhTien, MaVoucher) 
+  VALUES 
+  ('${hoaDon.MaHoaDon}', '${hoaDon.GhiChu}', '${hoaDon.HinhThucThanhToan}', '${hoaDon.TrangThai}', '${hoaDon.DiaChi}', ${hoaDon.GiaTong}, '${hoaDon.MaKhachHang}', '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaChiNhanhIn}', '${hoaDon.NgayTaoDon}', ${hoaDon.ThanhTien}, '${hoaDon.MaVoucher}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm hóa đơn bán hàng: ', error);
+  }
+}
+
+for (const hoaDon of hoaDonBanHang) {
+  await addHoaDonBan(hoaDon);
+}
+
+async function addHoaDonNhap(hoaDon) {
+  const query = `INSERT INTO HoaDonNhapHang (IDHoaDon, GhiChu, ThueNhap, ThoiGian, GiaTong, TongGiaVon, MaNhanVienPhuTrach, MaNhaCungCap, MaChiNhanhNhanHang) 
+  VALUES 
+  (${hoaDon.IDHoaDon}, '${hoaDon.GhiChu}', ${hoaDon.ThueNhap}, '${hoaDon.ThoiGian}', ${hoaDon.GiaTong}, ${hoaDon.TongGiaVon}, '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaNhaCungCap}', '${hoaDon.MaChiNhanhNhanHang}')`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm hóa đơn nhập hàng: ', error);
+  }
+}
+
 for (const hoaDon of hoaDonNhapHang) {
-    await addHoaDonNhap(hoaDon);
+  await addHoaDonNhap(hoaDon);
 }
+
+async function addProductImport(product) {
+  const query = `INSERT INTO DanhSachSanPhamNhap (MaHoaDon, MaSanPham, SoLuong, GiaNhap) VALUES
+    (${product.MaHoaDon}, '${product.MaSanPham}', ${product.SoLuong}, ${product.GiaNhap})`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm sản phẩm nhập: ', error);
+  }
+}
+
+for (const product of danhSachSanPhamNhap) {
+  await addProductImport(product);
+}
+
+async function addProductStock(stockItem) {
+  const query = `INSERT INTO DanhSachSanPhamKho (MaChiNhanh, MaSanPham, SoLuong) VALUES
+    ('${stockItem.MaChiNhanh}', '${stockItem.MaSanPham}', ${stockItem.SoLuong})`;
+
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm sản phẩm vào kho: ', error);
+  }
+}
+
+for (const stockItem of danhSachSanPhamKho) {
+  await addProductStock(stockItem);
+}
+
+async function addProductPurchase(purchase) {
+  const query = `INSERT INTO DanhSachSanPhamMua (MaHoaDon, MaSanPham, SoLuong, GiaKhiMua) VALUES
+    (${purchase.MaHoaDon}, '${purchase.MaSanPham}', ${purchase.SoLuong}, ${purchase.GiaKhiMua})`;
+  try {
+      await pool.request().query(query);
+  } catch (error) {
+      console.log('Lỗi khi thêm sản phẩm mua: ', error);
+  }
+}
+
+for (const purchase of danhSachSanPhamMua) {
+  await addProductPurchase(purchase);
+}
+
 
 
   } catch (err) {
@@ -561,7 +626,7 @@ for (const hoaDon of hoaDonNhapHang) {
     sql.close();
   }
 
-  
+
 }
 
 resetAndAddMultipleEmployeeData();
