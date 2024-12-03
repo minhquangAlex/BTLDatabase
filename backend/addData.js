@@ -381,7 +381,7 @@ async function resetAndAddMultipleEmployeeData() {
 
 async function addBranch(branch) {
   const query = `INSERT INTO ChiNhanh (MaChiNhanh, ThoiGianBatDau, ThoiGianKetThuc, Ten, SDT, DiaChi) VALUES
-  ('${removeVietnameseTones(branch.MaChiNhanh)}', '${branch.ThoiGianBatDau}', '${branch.ThoiGianKetThuc}', '${removeVietnameseTones(branch.Ten)}', '${branch.SDT}', '${removeVietnameseTones(branch.DiaChi)}')`;
+  ('${removeVietnameseTones(branch.MaChiNhanh)}', '${branch.ThoiGianBatDau}', '${branch.ThoiGianKetThuc}', N'${branch.Ten}', '${branch.SDT}', N'${branch.DiaChi}')`;
 
   try {
       await pool.request().query(query);
@@ -430,7 +430,7 @@ for (const product of sanPham) {
 
 async function addCustomer(customer) {
   const query = `INSERT INTO KhachHang (ID, Ten, SDT, NgaySinh, GioiTinh, Email, DaiDienDoanhNghiep, TenTaiKhoan, MatKhau) VALUES 
-  ('${removeVietnameseTones(customer.ID)}', '${removeVietnameseTones(customer.Ten)}', '${customer.SDT}', '${customer.NgaySinh}', '${removeVietnameseTones(customer.GioiTinh)}',
+  ('${removeVietnameseTones(customer.ID)}', N'${customer.Ten}', '${customer.SDT}', '${customer.NgaySinh}', N'${customer.GioiTinh}',
    '${removeVietnameseTones(customer.Email)}', ${customer.DaiDienDoanhNghiep}, '${removeVietnameseTones(customer.TenTaiKhoan)}', '${customer.MatKhau}')`;
 
   try {
@@ -498,6 +498,48 @@ async function addVoucher(voucher) {
 for (const voucher of Vouchers) {
   await addVoucher(voucher);
 }
+
+
+async function addSalaryRecord(salaryRecord) {
+  const query = `
+    INSERT INTO BangLuong (IDNhanVien, ThoiGianLamViec, ThangVaNam, TongLuong, ThuongThem, IDNhanVienCapNhat, ThoiGianCapNhat)
+    VALUES (
+      '${salaryRecord.IDNhanVien}', ${salaryRecord.ThoiGianLamViec}, '${salaryRecord.ThangVaNam}', ${salaryRecord.TongLuong},
+      ${salaryRecord.ThuongThem}, '${salaryRecord.IDNhanVienCapNhat}', '${salaryRecord.ThoiGianCapNhat}'
+    )
+  `;
+  
+  try {
+    await pool.request().query(query);
+  } catch (error) {
+    console.log('Lỗi khi thêm bản ghi lương: ', error);
+  }
+}
+
+async function addDeliveryAddress(deliveryAddress) {
+  const query = `
+    INSERT INTO DiaChiGiaoHang (MaKhachHang, DiaChi)
+    VALUES (
+      '${deliveryAddress.MaKhachHang}', N'${deliveryAddress.DiaChi}'
+    )
+  `;
+  
+  try {
+    await pool.request().query(query);
+  } catch (error) {
+    console.log('Lỗi khi thêm địa chỉ giao hàng: ', error);
+  }
+}
+
+for (const address of deliveryAddresses) {
+  await addDeliveryAddress(address);
+}
+
+
+for (const record of salaryRecords) {
+  await addSalaryRecord(record);
+}
+
 async function addProductToCart(cartItem) {
   const query = `INSERT INTO GioHang (MaKhachHang, MaSanPham, SoLuong) VALUES
       ('${cartItem.MaKhachHang}', '${cartItem.MaSanPham}', ${cartItem.SoLuong})`;
@@ -545,7 +587,7 @@ for (const review of reviews) {
 async function addHoaDonBan(hoaDon) {
   const query = `INSERT INTO HoaDonBanHang (MaHoaDon, GhiChu, HinhThucThanhToan, TrangThai, DiaChi, GiaTong, MaKhachHang, MaNhanVienPhuTrach, MaChiNhanhIn, NgayTaoDon, ThanhTien, MaVoucher) 
   VALUES 
-  ('${hoaDon.MaHoaDon}', '${hoaDon.GhiChu}', '${hoaDon.HinhThucThanhToan}', '${hoaDon.TrangThai}', '${hoaDon.DiaChi}', ${hoaDon.GiaTong}, '${hoaDon.MaKhachHang}', '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaChiNhanhIn}', '${hoaDon.NgayTaoDon}', ${hoaDon.ThanhTien}, '${hoaDon.MaVoucher}')`;
+  ('${hoaDon.MaHoaDon}', N'${hoaDon.GhiChu}', '${hoaDon.HinhThucThanhToan}', N'${hoaDon.TrangThai}', N'${hoaDon.DiaChi}', ${hoaDon.GiaTong}, '${hoaDon.MaKhachHang}', '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaChiNhanhIn}', '${hoaDon.NgayTaoDon}', ${hoaDon.ThanhTien}, '${hoaDon.MaVoucher}')`;
 
   try {
       await pool.request().query(query);
@@ -561,7 +603,7 @@ for (const hoaDon of hoaDonBanHang) {
 async function addHoaDonNhap(hoaDon) {
   const query = `INSERT INTO HoaDonNhapHang (IDHoaDon, GhiChu, ThueNhap, ThoiGian, GiaTong, TongGiaVon, MaNhanVienPhuTrach, MaNhaCungCap, MaChiNhanhNhanHang) 
   VALUES 
-  (${hoaDon.IDHoaDon}, '${hoaDon.GhiChu}', ${hoaDon.ThueNhap}, '${hoaDon.ThoiGian}', ${hoaDon.GiaTong}, ${hoaDon.TongGiaVon}, '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaNhaCungCap}', '${hoaDon.MaChiNhanhNhanHang}')`;
+  (${hoaDon.IDHoaDon}, N'${hoaDon.GhiChu}', ${hoaDon.ThueNhap}, '${hoaDon.ThoiGian}', ${hoaDon.GiaTong}, ${hoaDon.TongGiaVon}, '${hoaDon.MaNhanVienPhuTrach}', '${hoaDon.MaNhaCungCap}', '${hoaDon.MaChiNhanhNhanHang}')`;
 
   try {
       await pool.request().query(query);
