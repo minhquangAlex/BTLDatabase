@@ -84,13 +84,21 @@ app.get('/:table/:id', async (req, res) => {
     const { table, id } = req.params;
     const { tableName, primaryKey } = getTableConfig(table);
 
-    const queryParams = buildCompositeQueryParams(primaryKey, id.split(','));
+    if (typeof id !== 'string' || id.trim() === '') {
+      return res.status(400).send({ message: 'Invalid ID format' });
+    }
 
+    const ids = id.split(',');
+
+    let queryParams = ids.map((idValue) => ({
+      key: primaryKey,
+      value: idValue.trim() 
+    }));
     let query = `SELECT * FROM ${tableName} WHERE `;
     queryParams.forEach((param, index) => {
       query += `${param.key} = @${param.key}`;
       if (index < queryParams.length - 1) {
-        query += ' AND ';
+        query += ' OR ';
       }
     });
 
@@ -98,7 +106,7 @@ app.get('/:table/:id', async (req, res) => {
     const request = pool.request();
 
     queryParams.forEach(param => {
-      request.input(param.key, sql.NVarChar, param.value);
+      request.input(param.key, sql.VarChar, param.value); 
     });
 
     const result = await request.query(query);
@@ -107,7 +115,7 @@ app.get('/:table/:id', async (req, res) => {
       return res.status(404).send({ message: `No record found in ${tableName}` });
     }
 
-    res.json(result.recordset[0]);
+    res.json(result.recordset);
   } catch (err) {
     console.error(`Error retrieving from ${req.params.table}:`, err);
     res.status(500).send({ message: `Error retrieving from ${req.params.table}!` });
@@ -138,7 +146,7 @@ app.put('/:table/:id', async (req, res) => {
     const request = pool.request();
 
     queryParams.forEach(param => {
-      request.input(param.key, sql.NVarChar, param.value);
+      request.input(param.key, sql.VarChar, param.value);
     });
 
     Object.keys(data).forEach(key => {
@@ -172,7 +180,7 @@ app.delete('/:table/:id', async (req, res) => {
     const request = pool.request();
 
     queryParams.forEach(param => {
-      request.input(param.key, sql.NVarChar, param.value);
+      request.input(param.key, sql.VarChar, param.value);
     });
 
     await request.query(query);
