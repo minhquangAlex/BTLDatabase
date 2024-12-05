@@ -35,7 +35,8 @@ export default {
     // Kiểm tra route hiện tại để quyết định hiển thị header
     showHeader() {
       // Ẩn header chỉ trên trang đăng nhập (/login)
-      return this.$route.path !== "/login";
+      const excludedRoutes = ["/login", "/admin/products", "/admin/orders","/admin/employees"];
+      return !excludedRoutes.includes(this.$route.path);
     },
     // Kiểm tra route hiện tại để quyết định hiển thị ảnh nền
     showBackground() {
