@@ -1,8 +1,103 @@
+<script>
+import { Modal } from 'ant-design-vue';
+import DeleteRecord from "./DeleteRecord.vue";
+import FormAdding from "./FormAdding.vue"; // Import form thêm sản phẩm
+import FormEdit from "./FormEdit.vue";
+
+export default {
+  name: "ProductPage",
+  components: { DeleteRecord, FormEdit, Modal, FormAdding }, // Thêm FormAdding vào components
+  data() {
+    return {
+      products: [
+        {
+          MaSanPham: "DepZai",
+          Ten: "Boku no Pico",
+          GiaBan: "100000",
+          GiaVonTrungBinh: "2 billion",
+          NhaCungCap: "Japan",
+          TinhTrang: "Sold out"
+        },
+        {
+          MaSanPham: "SP001",
+          Ten: "Áo thun nam",
+          GiaBan: 100000,
+          GiaVonTrungBinh: 50000,
+          NhaCungCap: "NCC001",
+          TinhTrang: "Còn hàng",
+        }
+      ], 
+      productIdToDelete: null,
+      showDeleteDialog: false, 
+      editMode: false, 
+      addMode: false, // Thêm chế độ addMode
+      selectedProduct: null
+    };
+  },
+  methods: {
+    fetchProducts() {
+      fetch("/api/products")
+        .then(response => response.json())
+        .then(data => {
+          this.products = data;
+        })
+        .catch(error => {
+          console.error("Lỗi khi tải sản phẩm:", error);
+        });
+    },
+    deleteRecord(productId) {
+      this.productIdToDelete = productId;
+      this.showDeleteDialog = true;
+    },
+    handleDelete() {
+      this.products = this.products.filter(product => product.MaSanPham !== this.productIdToDelete);
+      this.productIdToDelete = null;
+      this.showDeleteDialog = false;
+    },
+    handleCancel() {
+      this.productIdToDelete = null;
+      this.showDeleteDialog = false;
+    },
+    handleEdit(product) {
+      this.selectedProduct = { ...product }; // Sao chép dữ liệu sản phẩm
+      this.editMode = true;
+    },
+    handleCancelEdit() {
+      this.editMode = false;
+      this.selectedProduct = null;
+    },
+    handleSave(updatedProduct) {
+      // Cập nhật sản phẩm trong mảng
+      const index = this.products.findIndex(p => p.MaSanPham === updatedProduct.MaSanPham);
+      if (index !== -1) {
+        // Cập nhật lại đối tượng sản phẩm trong mảng
+        this.products[index] = { ...updatedProduct };
+      }
+      this.handleCancelEdit();
+    },
+    handleAdd(newProduct) {
+      // Thêm sản phẩm mới vào danh sách
+      this.products.push(newProduct);
+      this.addMode = false; // Tắt chế độ thêm sản phẩm
+    },
+    handleCancelAdd() {
+      this.addMode = false; // Tắt chế độ thêm sản phẩm khi hủy
+    }
+  },
+  mounted() {
+    this.fetchProducts();
+  }
+};
+</script>
+
 <template>
   <div class="product-container">
     <h2>Danh sách sản phẩm</h2>
     <router-view />
     <DeleteRecord v-if="showDeleteDialog" ref="deleteRecord" @deleteConfirmed="handleDelete" @deleteCancelled="handleCancel" />
+    
+    <!-- Hiển thị form thêm sản phẩm nếu addMode là true -->
+
     <table class="product-table">
       <thead>
         <tr>
@@ -24,77 +119,32 @@
           <td>{{ product.NhaCungCap }}</td>
           <td>{{ product.TinhTrang }}</td>
           <td>
-            <button class="edit-btn">Sửa</button>
+            <button class="edit-btn" @click="handleEdit(product)">Sửa</button>
             <button class="edit-btn" @click="deleteRecord(product.MaSanPham)">Xóa</button>
+            <button class="edit-btn" @click="handleAdd(product)">Thêm</button> <!-- Thêm sự kiện mở form thêm -->
           </td>
         </tr>
       </tbody>
     </table>
+
+    <Modal v-if="addMode" title="Thêm sản phẩm" @cancel="handleCancelAdd" @ok="handleCancelAdd" :footer="null">
+      <FormAdding @save="handleAdd" @cancel="handleCancelAdd" />
+    </Modal>
+
+    <Modal v-if="addMode && selectedProduct"  
+             title="Thêm thông tin sản phẩm"
+             :visible="editMode"
+             @cancel="handleCancelEdit"
+             @ok="handleCancelEdit"
+             :footer="null">
+             <FormEdit :product="selectedProduct" 
+                @save="handleSave"
+                @cancel="handleCancelEdit"
+      />
+    </Modal>
+
   </div>
 </template>
-
-<script>
-import DeleteRecord from "./DeleteRecord.vue";
-
-export default {
-  name: "ProductPage",
-  components: { DeleteRecord },
-  data() {
-    return {
-      products: [
-        {
-          MaSanPham: "DepZai",
-          Ten: "Boku no Pico",
-          GiaBan: "100000",
-          GiaVonTrungBinh: "2 billion",
-          NhaCungCap: "Japan",
-          TinhTrang: "Sold out"
-        },
-        {
-          MaSanPham: "",
-          Ten: "",
-          GiaBan: "",
-          GiaVonTrungBinh: "",
-          NhaCungCap: "",
-          TinhTrang: ""
-        }
-      ], // Danh sách sản phẩm sẽ được lấy từ API
-      productIdToDelete: null, // Thêm biến để lưu trữ productId cần xóa
-      showDeleteDialog: false // Trạng thái hiển thị của hộp thoại xác nhận xóa
-    };
-  },
-  methods: {
-    fetchProducts() {
-      // Đây là giả lập gọi API, thay thế URL bằng API thực tế của bạn
-      fetch("/api/products")
-        .then(response => response.json())
-        .then(data => {
-          this.products = data;
-        })
-        .catch(error => {
-          console.error("Lỗi khi tải sản phẩm:", error);
-        });
-    },
-    deleteRecord(productId) {
-      this.productIdToDelete = productId; // Lưu trữ productId cần xóa
-      this.showDeleteDialog = true; // Hiển thị hộp thoại xác nhận xóa
-    },
-    handleDelete() {
-      // Thực hiện xóa sản phẩm bằng cách lọc bỏ sản phẩm với productId cần xóa
-      this.products = this.products.filter(product => product.MaSanPham !== this.productIdToDelete);
-      this.productIdToDelete = null; // Đặt lại biến lưu trữ sau khi xóa thành công
-      this.showDeleteDialog = false; // Đóng hộp thoại xác nhận xóa
-    },
-    handleCancel() {
-      this.productIdToDelete = null; // Hủy xóa, đặt lại biến lưu trữ
-      this.showDeleteDialog = false; // Đóng hộp thoại xác nhận xóa
-    }
-  },
-  mounted() {
-    this.fetchProducts();
-  }
-};
-</script>
 
 <style scoped>
 .product-container {
