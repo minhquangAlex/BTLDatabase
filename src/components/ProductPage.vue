@@ -10,6 +10,7 @@
             <th>Giá vốn trung bình</th>
             <th>Nhà cung cấp</th>
             <th>Tình trạng</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,10 @@
             <td>{{ product.GiaVonTrungBinh }}</td>
             <td>{{ product.NhaCungCap }}</td>
             <td>{{ product.TinhTrang }}</td>
+            <td>
+              <button>Sửa</button>
+              <button>Xóa</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -32,7 +37,25 @@
     name: "ProductTable",
     data() {
       return {
-        products: [] // Danh sách sản phẩm sẽ được lấy từ API
+        products: [
+          {
+            MaSanPham: "DepZai",
+            Ten: "Boku no Pico",
+            GiaBan: "100000",
+            GiaVonTrungBinh: "2 billion",
+            NhaCungCap: "Japan",
+            TinhTrang: "Sold out"
+          },
+          {
+            MaSanPham: "",
+            Ten: "",
+            GiaBan: "",
+            GiaVonTrungBinh: "",
+            NhaCungCap: "",
+            TinhTrang: ""
+          }
+        ] // Danh sách sản phẩm sẽ được lấy từ API
+
       };
     },
     methods: {
