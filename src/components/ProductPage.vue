@@ -1,12 +1,11 @@
 <script>
 import { Modal } from 'ant-design-vue';
 import DeleteRecord from "./DeleteRecord.vue";
-import FormAdding from "./FormAdding.vue"; // Import form thêm sản phẩm
 import FormEdit from "./FormEdit.vue";
 
 export default {
   name: "ProductPage",
-  components: { DeleteRecord, FormEdit, Modal, FormAdding }, // Thêm FormAdding vào components
+  components: { DeleteRecord, FormEdit, Modal },
   data() {
     return {
       products: [
@@ -30,7 +29,6 @@ export default {
       productIdToDelete: null,
       showDeleteDialog: false, 
       editMode: false, 
-      addMode: false, // Thêm chế độ addMode
       selectedProduct: null
     };
   },
@@ -75,14 +73,6 @@ export default {
       }
       this.handleCancelEdit();
     },
-    handleAdd(newProduct) {
-      // Thêm sản phẩm mới vào danh sách
-      this.products.push(newProduct);
-      this.addMode = false; // Tắt chế độ thêm sản phẩm
-    },
-    handleCancelAdd() {
-      this.addMode = false; // Tắt chế độ thêm sản phẩm khi hủy
-    }
   },
   mounted() {
     this.fetchProducts();
@@ -95,9 +85,6 @@ export default {
     <h2>Danh sách sản phẩm</h2>
     <router-view />
     <DeleteRecord v-if="showDeleteDialog" ref="deleteRecord" @deleteConfirmed="handleDelete" @deleteCancelled="handleCancel" />
-    
-    <!-- Hiển thị form thêm sản phẩm nếu addMode là true -->
-
     <table class="product-table">
       <thead>
         <tr>
@@ -121,31 +108,27 @@ export default {
           <td>
             <button class="edit-btn" @click="handleEdit(product)">Sửa</button>
             <button class="edit-btn" @click="deleteRecord(product.MaSanPham)">Xóa</button>
-            <button class="edit-btn" @click="handleAdd(product)">Thêm</button> <!-- Thêm sự kiện mở form thêm -->
+            <button class="edit-btn" >Thêm </button>
+            
           </td>
         </tr>
       </tbody>
     </table>
 
-    <Modal v-if="addMode" title="Thêm sản phẩm" @cancel="handleCancelAdd" @ok="handleCancelAdd" :footer="null">
-      <FormAdding @save="handleAdd" @cancel="handleCancelAdd" />
-    </Modal>
-
-    <Modal v-if="addMode && selectedProduct"  
-             title="Thêm thông tin sản phẩm"
+    <Modal v-if="editMode && selectedProduct"  
+             title="Chỉnh sửa thông tin sản phẩm"
              :visible="editMode"
              @cancel="handleCancelEdit"
              @ok="handleCancelEdit"
-             :footer="null">
-             <FormEdit :product="selectedProduct" 
+             :footer="null"
+    >
+      <FormEdit :product="selectedProduct" 
                 @save="handleSave"
                 @cancel="handleCancelEdit"
       />
     </Modal>
-
   </div>
 </template>
-
 <style scoped>
 .product-container {
   padding: 1rem;
