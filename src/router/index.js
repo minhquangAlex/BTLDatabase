@@ -5,7 +5,7 @@ import AdminLogin from '@/components/Login/AdminLogin.vue';
 import StudentLogin from '@/components/Login/StudentLogin.vue';
 import WaitingLogin from '@/components/Login/WaitingLogin.vue';
 import Orderpage from '@/components/OrderPage.vue';
-import ProductPage from '@/components/ProductPage.vue';
+import ProductPage from '@/components/Product/ProductPage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
