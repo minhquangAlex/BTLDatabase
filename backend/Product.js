@@ -9,9 +9,9 @@ router.post('/product', async (req, res) => {
    } = req.body;
 
   const query = `
-       EXEC addProduct @MaSanPham @Ten @GiaBan @GiaVonTrungBinh @HinhAnh @NhaCungCap 
-       @TinhTrang @MauSac @Loai @Size @TheLoai @NhaXuatBan @NgayPhatHanh @TacGia @NguoiDich 
-       @DinhDang @SoTrang @CongDung @MoTa @LoaiSanPham
+       EXEC addProduct @MaSanPham, @Ten, @GiaBan, @GiaVonTrungBinh, @HinhAnh, @NhaCungCap, 
+       @TinhTrang, @MauSac, @Loai, @Size, @TheLoai, @NhaXuatBan, @NgayPhatHanh, @TacGia, @NguoiDich, 
+       @DinhDang, @SoTrang, @CongDung, @MoTa, @LoaiSanPham
   `;
   
   try {
@@ -62,9 +62,16 @@ router.get('/product', async (req, res) => {
 router.get('/product/Sach', async (req, res) => {
     const query = `
         SELECT 
-            s.MaSanPham,
-            s.*,
-            p.*
+            p.*,
+            s.TheLoai,
+            s.NhaXuatBan,
+            s.NgayPhatHanh,
+            s.TacGia,
+            s.NguoiDich,
+            s.DanhGia,
+            s.DinhDang,
+            s.Size,
+            s.SoTrang
         FROM Sach s
         INNER JOIN SanPham p ON s.MaSanPham = p.MaSanPham
         WHERE s.MaSanPham = p.MaSanPham
@@ -83,9 +90,10 @@ router.get('/product/Sach', async (req, res) => {
 
 router.get('/product/DungCuHocTap', async (req, res) => {
     const query = `SELECT 
-            s.MaSanPham,
-            s.*,
-            p.*
+            p.*,
+            s.MauSac,
+            s.Loai, 
+            s.Size
         FROM DungCuHocTap s
         INNER JOIN SanPham p ON s.MaSanPham = p.MaSanPham
         WHERE s.MaSanPham = p.MaSanPham
@@ -105,9 +113,10 @@ router.get('/product/DungCuHocTap', async (req, res) => {
 router.get('/product/PhuKienSach', async (req, res) => {
     const query =  `
         SELECT 
-            s.MaSanPham,
-            s.*,
-            p.*
+            p.*,
+            s.CongDung,
+            s.MoTa,
+            s.MauSac
         FROM PhuKienSach s
         INNER JOIN SanPham p ON s.MaSanPham = p.MaSanPham
         WHERE s.MaSanPham = p.MaSanPham
@@ -168,9 +177,9 @@ router.put('/product/:id', async (req, res) => {
     TheLoai, NhaXuatBan, NgayPhatHanh, TacGia, NguoiDich, DinhDang, SoTrang, CongDung, MoTa
   } = req.body;
   const query = `
-    EXEC updateProduct @MaSanPham @Ten @GiaBan @GiaVonTrungBinh @HinhAnh @NhaCungCap
-    @TinhTrang @LoaiSanPham @MauSac @Loai @Size @TheLoai @NhaXuatBan @NgayPhatHanh @TacGia @NguoiDich
-    @DinhDang @SoTrang @CongDung @MoTa
+    EXEC updateProduct @MaSanPham, @Ten, @GiaBan, @GiaVonTrungBinh, @HinhAnh, @NhaCungCap,
+    @TinhTrang, @LoaiSanPham, @MauSac, @Loai, @Size, @TheLoai, @NhaXuatBan, @NgayPhatHanh, @TacGia, @NguoiDich,
+    @DinhDang, @SoTrang, @CongDung, @MoTa
     `;
     
     try {
