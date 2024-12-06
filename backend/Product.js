@@ -4,6 +4,7 @@ const router = express.Router();
 
 // API CRUD for Product
 router.post('/product', async (req, res) => {
+  console.log("Thêm sản phẩm", req.body);
   const { MaSanPham, Ten, GiaBan, GiaVonTrungBinh, HinhAnh, NhaCungCap, TinhTrang, MauSac, Loai, Size, 
           TheLoai, NhaXuatBan, NgayPhatHanh, TacGia, NguoiDich, DinhDang, SoTrang, CongDung, MoTa, LoaiSanPham
    } = req.body;
@@ -137,24 +138,7 @@ router.get('/product/:id', async (req, res) => {
     const id = req.params.id;
   
     const query = `
-      SELECT p.MaSanPham, p.*, s.* 
-      FROM SanPham p
-      JOIN Sach s ON p.MaSanPham = s.MaSanPham
-      WHERE p.MaSanPham = @id
-  
-      UNION ALL
-  
-      SELECT p.MaSanPham, p.*, dcht.*
-      FROM SanPham p
-      JOIN DungCuHocTap dcht ON p.MaSanPham = dcht.MaSanPham
-      WHERE p.MaSanPham = @id
-  
-      UNION ALL
-  
-      SELECT p.MaSanPham, p.*, pks.*
-      FROM SanPham p
-      JOIN PhuKienSach pks ON p.MaSanPham = pks.MaSanPham
-      WHERE p.MaSanPham = @id;
+      SELECT * FROM SanPham WHERE MaSanPham = @id
     `;
   
     try {
@@ -165,7 +149,7 @@ router.get('/product/:id', async (req, res) => {
   
       res.json(result.recordset);
     } catch (err) {
-      console.error('Error retrieving product data:', err);
+      console.error('Error retrieving product data with ID :', err);
       res.status(500).send({ message: 'Error retrieving product data!' });
     }
   });

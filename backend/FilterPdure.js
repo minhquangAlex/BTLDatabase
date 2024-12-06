@@ -3,14 +3,11 @@ const sql = require('mssql');
 const router = express.Router();
 
 router.get('/filter', async (req, res) => {
-  const { maxPrice } = req.body;
-  const query = 'EXEC LocSanPhamTheoGia @maxPrice';
+  const query = 'EXEC LocSanPhamTheoGia 50000';
 
   try {
     const pool = req.app.locals.db;
-    const result = await pool.request()
-        .input('maxPrice', sql.Int, maxPrice)
-        .query(query);
+    const result = await pool.request().query(query);
     res.json(result.recordset);
   } catch (err) {
     console.error('Error retrieving product records after filter:', err);

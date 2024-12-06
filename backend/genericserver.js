@@ -1,5 +1,6 @@
 const express = require('express');
 const sql = require('mssql');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const tableConfig = require('./tableConfig');
 const productApi = require('./Product');
@@ -9,6 +10,10 @@ const dbConfig = require('./dbConfig');
 
 const app = express();
 const port = 3000;
+
+app.use(cors({
+  origin: 'http://localhost:8080', // Replace with the frontend URL
+}));
 
 // Kết nối cơ sở dữ liệu
 sql.connect(dbConfig)
