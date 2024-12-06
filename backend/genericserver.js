@@ -2,6 +2,9 @@ const express = require('express');
 const sql = require('mssql');
 const bodyParser = require('body-parser');
 const tableConfig = require('./tableConfig');
+const productApi = require('./Product');
+const filter = require('./FilterPdure');
+const revenueStatistics = require('./RevStatic');
 const dbConfig = require('./dbConfig');
 
 const app = express();
@@ -20,6 +23,11 @@ sql.connect(dbConfig)
 
 
 app.use(bodyParser.json());
+
+app.use(productApi);
+app.use(filter);
+app.use(revenueStatistics);
+
 
 function getTableConfig(tableKey) {
   const config = tableConfig[tableKey];
