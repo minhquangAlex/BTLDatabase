@@ -40,7 +40,7 @@
     </FormItem>
 
     <FormItem v-if="productType === 'Sách'" label="Ngày phát hành" name="NgayPhatHanh">
-      <DatePicker v-model:value="formState.NgayPhatHanh" />
+      <Input v-model:value="formState.NgayPhatHanh" />
     </FormItem>
 
 
@@ -92,7 +92,7 @@
 
 <script>
 import { ref, watch } from "vue";
-import { Button, Form, Input, InputNumber ,DatePicker} from "ant-design-vue";
+import { Button, Form, Input, InputNumber } from "ant-design-vue";
 
 export default {
   name: "EditProductForm",
@@ -101,7 +101,6 @@ export default {
     Form,
     Input,
     InputNumber,
-    DatePicker,
     FormItem: Form.Item,
   },
   props: {
