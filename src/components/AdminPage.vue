@@ -10,6 +10,32 @@
           <router-link to="/admin/products" class="menu-item">Sản phẩm</router-link>
           <router-link to="/admin/orders" class="menu-item">Đơn hàng</router-link>
           <router-link to="/admin/employees" class="menu-item">Nhân viên</router-link>
+          <button class="menu-item" @click="showRevenueStats = !showRevenueStats">Thống kê doanh thu</button>
+        </div>
+
+        <div v-if="showRevenueStats" class="revenue-stats">
+          <label for="startDate">Ngày bắt đầu:</label>
+          <input type="date" id="startDate" v-model="startDate">
+          <label for="endDate">Ngày kết thúc:</label>
+          <input type="date" id="endDate" v-model="endDate">
+          <button @click="getRevenueStats">Submit</button>
+
+          <table v-if="revenueStats.length > 0" class="product-table">
+            <thead>
+            <tr>
+              <th>Mã chi nhánh</th>
+              <th>Tên chi nhánh</th>
+              <th>Doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="stat in revenueStats" :key="stat.MaChiNhanh">
+              <td>{{ stat.MaChiNhanh }}</td>
+              <td>{{ stat.TenChiNhanh }}</td>
+              <td>{{ stat.DoanhThu }}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
 
         <router-view />
@@ -20,10 +46,35 @@
 
 <script>
 import MainHeader from "@/components/MainHeader.vue";
+import axios from 'axios';
 
 export default {
   name: "AdminPage",
-  components: {MainHeader},
+  components: { MainHeader },
+  data() {
+    return {
+      showRevenueStats: false,
+      startDate: null,
+      endDate: null,
+      revenueStats: []
+    };
+  },
+  methods: {
+    async getRevenueStats() {
+      try {
+        console.log('Fetching revenue stats...', this.startDate, this.endDate);
+        const response = await axios.get('http://localhost:3000/statistic', {
+          data: {
+            StartDate: this.startDate,
+            EndDate: this.endDate
+          }
+        });
+        this.revenueStats = response.data;
+      } catch (error) {
+        console.error('Error fetching revenue stats:', error);
+      }
+    }
+  }
 };
 </script>
 
@@ -79,5 +130,29 @@ export default {
 .h2 {
   display: flex;
   justify-content: center;
+}
+
+.product-table {
+  overflow-x: auto;
+  table-layout: auto;
+  justify-content: center;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.product-table th {
+  background-color: #4f76f5;
+  color: white;
+}
+
+.product-table tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 </style>

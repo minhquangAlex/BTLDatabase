@@ -82,17 +82,17 @@
     </Modal>
 
     <!-- Modal Add Product -->
-<!--    <Modal-->
-<!--        v-if="addMode"-->
-<!--        title="Thêm sản phẩm mới"-->
-<!--        v-model:visible="addMode"-->
-<!--        @cancel="handleCancelEdit"-->
-<!--        @ok="handleCancelEdit"-->
-<!--        :footer="null">-->
-<!--      <FormAdding-->
-<!--          :product="selectedProduct"-->
-<!--          @save="handleSave" />-->
-<!--    </Modal>-->
+    <!--    <Modal-->
+    <!--        v-if="addMode"-->
+    <!--        title="Thêm sản phẩm mới"-->
+    <!--        v-model:visible="addMode"-->
+    <!--        @cancel="handleCancelEdit"-->
+    <!--        @ok="handleCancelEdit"-->
+    <!--        :footer="null">-->
+    <!--      <FormAdding-->
+    <!--          :product="selectedProduct"-->
+    <!--          @save="handleSave" />-->
+    <!--    </Modal>-->
   </div>
 </template>
 
@@ -152,8 +152,8 @@ export default {
       this.showDeleteDialog = false;
     },
     handleEdit(product) {
-      
-    
+
+
 
       console.log("edit",product);
       this.selectedProduct = { ...product };
@@ -168,7 +168,7 @@ export default {
       if (this.editMode) {
         try {
           await axios.put(`http://localhost:3000/product/${updatedProduct.MaSanPham}`, updatedProduct);
-          
+
           const index = this.products.findIndex(p => p.MaSanPham === updatedProduct.MaSanPham);
           if (index !== -1) {
             this.products.splice(index, 1, updatedProduct);
@@ -235,17 +235,17 @@ export default {
             const response = await axios.get(`http://localhost:3000/product/Sach`);
 
             this.products = response.data;
-        
+
           } else if(this.selectedLoai === 'Dụng cụ học tập'){
             const response = await axios.get(`http://localhost:3000/product/DungCuHocTap`);
             this.products = response.data;
-          
+
           } else if(this.selectedLoai === 'Phụ kiện sách'){
             const response = await axios.get(`http://localhost:3000/product/PhuKienSach`);
             this.products = response.data;
-          
+
           }
-          
+
         }
       } catch (error) {
         console.error('Error filtering products:', error);
@@ -302,9 +302,9 @@ h2 {
   background-color: #f2f2f2;
 }
 .product-table-container {
-  max-height: 450px; 
-  overflow-y: auto; 
-  border: 1px solid #ddd; 
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
 }
 .edit-btn {
   background-color: #4CAF50; /* Green */
